@@ -42,6 +42,3 @@ RSpec.describe UsersController,type: :controller do
     end
   end
 end
-
-#the following is the mistake that i tended to make
-#when writing the controller specs then we 
