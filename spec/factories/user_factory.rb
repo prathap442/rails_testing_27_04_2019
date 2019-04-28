@@ -6,4 +6,8 @@ FactoryBot.define do
   factory :user do
     name { Faker::Name.name }
   end
+
+  factory :users do 
+    User.all
+  end
 end
