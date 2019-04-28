@@ -124,5 +124,56 @@ RSpec.describe UsersController,type: :controller do
     end
   end
 
-  
+  describe "PATCH#user" do 
+    #when the params are invalid params
+    before { patch :update, params: params }
+    context "when the user record itself is not found" do 
+      let(:params) { {id:  Faker::Number.number} }
+      it "when the record is not found it redirects to index page" do 
+         is_expected.to redirect_to(users_path)  
+      end
+      it "when the record is not found expect a flash message with the record not found" do 
+         expect(flash[:notice]).to eq('User not found.')
+      end
+    end
+
+    context "when the user exists and is tried to update with valid parameters" do#doubt
+      let(:user) { FactoryBot.create(:user) }
+      let(:params) { { id: user.id, user: { name: 'test name' } } }
+      it "when user record is updated the parmeters also need to be updated" do 
+        expect(assigns[:user].reload.name).to eq('test name')
+        # when the process of update is happening and the records found are obtained and are obtained by name attribute with 'testname'
+        # assigns[:user] is update with 'test name'
+      end
+
+      it "when user record is updated the redirection should be users index page" do 
+        is_expected.to redirect_to(users_path)
+      end
+
+      it "is expected to set the flash message when the record is updated" do
+        expect(flash[:notice]).to eq('User has been updated Successfully.') 
+      end
+    end
+
+    context 'when the user exists and is tried to update with invalid parameters' do 
+      let(:user) do 
+        FactoryBot.create(:user)
+      end
+      let(:params) do 
+        {id: user.id, user: {name: ''}}
+      end
+      it "is expected not to update the username by empty value" do 
+        #so the user.reload once the record is updated the state of the record persits in user.reload
+        expect(user.reload.name).not_to be_empty
+      end
+
+      it "is expected to render edit template" do 
+        is_expected.to render_template(:edit )
+      end
+
+      it 'is expected to add errors to user name attribute' do
+        expect(assigns[:user].errors[:name]).to eq(['can\'t be blank'])
+      end
+    end
+  end
 end
