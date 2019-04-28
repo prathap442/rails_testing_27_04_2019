@@ -45,7 +45,7 @@ RSpec.describe UsersController,type: :controller do
   describe "GET #create" do 
     #the before is a key word, and is called as "hook" is rspec
     before { post :create,params: params  }
-    context "when the params are correct" do 
+    context 'when the params are correct' do 
         #Use let to define a memoized helper method. The value will be cached across
         #multiple calls in the same example but not across examples
       let(:params) do 
@@ -75,6 +75,19 @@ RSpec.describe UsersController,type: :controller do
       end
     end
 
+    context 'when the params are incorrect' do 
+      #when we send incorrect params
+      let(:params) { {user: {name: ''}} }
+      it "should give me the messsage that the name can't be blank" do 
+        expect(assigns[:user].errors['name']).to eq(['can\'t be blank'])
+      end
 
+      it "should render back the new template" do 
+        #yes when there are incorrect params being submitted then the template rendered is new
+        is_expected.to render_template(:new)
+      end
+    end
+
+    
   end
 end
