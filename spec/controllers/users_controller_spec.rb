@@ -111,5 +111,18 @@ RSpec.describe UsersController,type: :controller do
         is_expected.to render_template(:edit)
       end
     end
-  end  
+
+    context 'when the params are invalid that is user id is invalid' do 
+      let(:params) { {id: Faker::Number.number} }
+      it "is expected to redirect to users index page" do 
+        is_expected.to redirect_to(users_path)
+      end
+
+      it "is expected to set flash message when the user record is not found" do 
+        expect(flash[:notice]).to eq('User not found.')
+      end
+    end
+  end
+
+  
 end
