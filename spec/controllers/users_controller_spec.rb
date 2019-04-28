@@ -41,4 +41,40 @@ RSpec.describe UsersController,type: :controller do
        is_expected.to render_template(:application)
     end
   end
+
+  describe "GET #create" do 
+    #the before is a key word, and is called as "hook" is rspec
+    before { post :create,params: params  }
+    context "when the params are correct" do 
+        #Use let to define a memoized helper method. The value will be cached across
+        #multiple calls in the same example but not across examples
+      let(:params) do 
+         {user: {name: "Ani"}}
+      end
+      
+      it "is expected to create new user successfully" do 
+        expect(assigns[:user]).to be_instance_of(User)
+      end
+
+      it "is expected to have the instance name as expected" do
+        expect(assigns[:user].name).to eq("Ani")
+      end
+      
+      #the example below first lazy load with the memoized helper let and the value being cached
+      #the cached value is not the main content in the below example
+      #the example below expects that we redirect the action once params being
+      #strictly acceptable to the users index action where it is expected to render index template
+      it "is expected to redirect to users path" do 
+        is_expected.to redirect_to(users_path)
+      end
+      
+      #the example says that the expected flash message is according to our expectation or not
+      #when the right params are being passed 
+      it "is expected to set the flash message" do 
+        expect(flash[:notice]).to eq('User Created Successfully.')
+      end
+    end
+
+
+  end
 end
