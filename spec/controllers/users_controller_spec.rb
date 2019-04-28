@@ -16,9 +16,29 @@ RSpec.describe UsersController,type: :controller do
     #once in the index action we are 
     before {get :index}
     it "we expect the instance variable users and with data assigned of GET request" do 
-       #assigns tries to create an instance variable and by the @users virtually and is being assigned with the value of before{get :index}
+       #assigns tries to create an instance variable and by the @users virtually with the content of the content being assigned in the Users controller
        #Now the comparision is done with User.all that is against all the records that exist in the data base
        expect(assigns[:users]).to eq(User.all)
+    end
+  end
+
+  describe "GET #new" do 
+    #these are the group of the specs related to the new action wit GET Http verb
+    before { get :new}
+    #the before above indicates that before every example in the group perform a get request for new action under users controller
+    it "checks the assigned instance variable is an instance of User class or not" do 
+        #assign[:user] tries to create us the instance variable with the content of the users controller new action
+        expect(assigns[:user]).to be_instance_of(User)
+    end 
+
+    it "checks the case of the template rendered is new" do
+       is_expected.to render_template(:new)
+    end
+    
+    #the example tries to check the case of the template rendered for the action of 
+    #GET new is containg application.html.erb
+    it "checks the case of the template rendering of application.html.erb" do 
+       is_expected.to render_template(:application)
     end
   end
 end
