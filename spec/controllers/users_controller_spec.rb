@@ -77,6 +77,7 @@ RSpec.describe UsersController,type: :controller do
 
     context 'when the params are incorrect' do 
       #when we send incorrect params
+      #let(:params) this memoizes and stores in the cache
       let(:params) { {user: {name: ''}} }
       it "should give me the messsage that the name can't be blank" do 
         expect(assigns[:user].errors['name']).to eq(['can\'t be blank'])
@@ -87,7 +88,28 @@ RSpec.describe UsersController,type: :controller do
         is_expected.to render_template(:new)
       end
     end
-
-    
   end
+
+  #edit action 
+  describe 'GET #edit' do
+    before do
+      # something that you want to execute before running `it` block
+      get :edit, params: params
+    end
+   
+    context "when the params are valid" do 
+      let(:user){ FactoryBot.create(:user)}
+      let(:params){ {id: user.id} }
+      it "is expected to set the user instance variable" do 
+        expect(assigns[:user]).to be_instance_of(User)
+      end
+      it "should be able to give back us the correct record" do 
+        expect(assigns[:user]).to eq(User.find_by(id: user.id))
+      end 
+
+      it "should render the edit template when the params are valid" do 
+        is_expected.to render_template(:edit)
+      end
+    end
+  end  
 end

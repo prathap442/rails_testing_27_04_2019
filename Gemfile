@@ -45,6 +45,7 @@ group :development, :test do
   gem "spring"
   gem 'web-console', '>= 3.3.0'
   gem 'rails-controller-testing'
+  gem 'pry'
 end
 
 group :development do
@@ -59,7 +60,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  gem 'faker',                        '~> 1.8', '>= 1.8.7'
+  gem 'faker','~> 1.8', '>= 1.8.7'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
   gem "database_cleaner"
